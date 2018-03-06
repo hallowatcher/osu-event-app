@@ -1,0 +1,24 @@
+<ion-content padding>
+  <h3>osu! event</h3>
+
+  <h5>
+    <b>Logged in: </b>{{loggedIn$ | async}}
+  </h5>
+
+  <ion-card>
+    <ion-card-content>
+      <ion-item>
+        <ion-label stacked>Email</ion-label>
+        <ion-input type="email" [(ngModel)]="email"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label stacked>Password</ion-label>
+        <ion-input type="password" [(ngModel)]="password"></ion-input>
+      </ion-item>
+
+      <button ion-button secondary (click)="login()" round full style="margin-top: 20px;">Log in</button>
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>
