@@ -8,7 +8,7 @@ import { map } from 'rxjs/operators';
 export class AuthService {
   constructor(private auth: AngularFireAuth) {}
 
-  loggedIn(): Observable<any> {
+  loggedIn(): Observable<boolean> {
     return this.auth.authState.pipe(map(user => !!user));
   }
 

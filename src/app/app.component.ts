@@ -25,6 +25,7 @@ export class MyApp {
     // used for an example of ngFor and navigation
     this.pages = [
       { title: 'Home', component: 'HomePage' },
+      { title: 'Verify', component: 'VerifyPage' },
       { title: 'Logout', component: '' }
     ];
   }
@@ -41,6 +42,7 @@ export class MyApp {
   openPage(page) {
     if (page.title === 'Logout') {
       this.authService.logout();
+      this.nav.setRoot('LoginPage');
       return;
     }
     this.nav.setRoot(page.component);

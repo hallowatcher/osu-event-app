@@ -8,6 +8,8 @@ import { MyApp } from './app.component';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { QRScanner } from '@ionic-native/qr-scanner';
+
 import { AuthService } from '../services/auth.service';
 
 const FIREBASE = {
@@ -32,6 +34,7 @@ const FIREBASE = {
   providers: [
     StatusBar,
     SplashScreen,
+    QRScanner,
     AuthService,
     { provide: ErrorHandler, useClass: IonicErrorHandler }
   ]
