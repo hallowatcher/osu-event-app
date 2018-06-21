@@ -1,15 +1,15 @@
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform } from 'ionic-angular';
+import { Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { AuthService } from '../services/auth.service';
+import { Store } from '@ngxs/store';
+import { Logout } from '../store/actions/user.actions';
+import { Home } from '../store/actions/nav.actions';
 
 @Component({
   templateUrl: 'app.html'
 })
 export class MyApp {
-  @ViewChild(Nav) nav: Nav;
-
   rootPage: any = 'LoginPage';
 
   pages: Array<{ title: string; component: any }>;
@@ -18,7 +18,7 @@ export class MyApp {
     public platform: Platform,
     public statusBar: StatusBar,
     public splashScreen: SplashScreen,
-    public authService: AuthService
+    public store: Store
   ) {
     this.initializeApp();
 
@@ -41,10 +41,10 @@ export class MyApp {
 
   openPage(page) {
     if (page.title === 'Logout') {
-      this.authService.logout();
-      this.nav.setRoot('LoginPage');
+      this.store.dispatch([new Logout(), new Home('LoginPage')]);
       return;
     }
-    this.nav.setRoot(page.component);
+
+    this.store.dispatch(new Home(page.component));
   }
 }

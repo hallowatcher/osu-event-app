@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { AuthService } from '../../services/auth.service';
-import { IonicPage, NavController } from 'ionic-angular';
+import { IonicPage } from 'ionic-angular';
+import { Store } from '@ngxs/store';
+import { Login } from '../../store/actions/user.actions';
+import { Home } from '../../store/actions/nav.actions';
 
 @IonicPage()
 @Component({
@@ -12,22 +14,11 @@ export class LoginPage {
   email: string = '';
   password: string = '';
 
-  constructor(public authService: AuthService, public nav: NavController) {
-    this.loggedIn$ = this.authService.loggedIn();
-
-    this.loggedIn$.subscribe(loggedIn => {
-      if (loggedIn) {
-        this.nav.setRoot('HomePage');
-      }
-    });
-  }
+  constructor(public store: Store) {}
 
   login() {
-    this.authService.login(this.email, this.password).subscribe(
-      () => {},
-      err => {
-        console.log(err.message);
-      }
-    );
+    this.store.dispatch(new Login(this.email, this.password)).subscribe(() => {
+      this.store.dispatch(new Home('HomePage'));
+    });
   }
 }

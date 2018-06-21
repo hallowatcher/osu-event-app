@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController } from 'ionic-angular';
-import { Observable } from 'rxjs/Observable';
+import { IonicPage } from 'ionic-angular';
 import { AuthService } from '../../services/auth.service';
-import { tap, take } from 'rxjs/operators';
 
 @IonicPage()
 @Component({
@@ -10,7 +8,7 @@ import { tap, take } from 'rxjs/operators';
   templateUrl: 'home.html'
 })
 export class HomePage {
-  constructor(private auth: AuthService, private nav: NavController) {}
+  constructor(private auth: AuthService) {}
 
   ionViewCanEnter() {
     return new Promise((resolve, reject) => {

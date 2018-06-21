@@ -1,5 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
+import { NgxsModule } from '@ngxs/store';
+import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuthModule } from 'angularfire2/auth';
@@ -13,6 +15,9 @@ import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 import { Toast } from '@ionic-native/toast';
 
 import { AuthService } from '../services/auth.service';
+import { TicketState } from '../store/states/ticket.state';
+import { UserState } from '../store/states/user.state';
+import { NavState } from '../store/states/nav.state';
 
 const FIREBASE = {
   apiKey: 'AIzaSyD_Owd16YQQfcYcPoMF2k3If8lJeNIepxw',
@@ -30,7 +35,9 @@ const FIREBASE = {
     IonicModule.forRoot(MyApp),
     AngularFireModule.initializeApp(FIREBASE),
     AngularFireAuthModule,
-    AngularFireDatabaseModule
+    AngularFireDatabaseModule,
+    NgxsModule.forRoot([NavState, TicketState, UserState]),
+    NgxsLoggerPluginModule.forRoot()
   ],
   bootstrap: [IonicApp],
   entryComponents: [MyApp],
