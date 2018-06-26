@@ -1,24 +1,28 @@
 <ion-content padding>
-  <h3>osu! event</h3>
 
-  <h5>
-    <b>Logged in: </b>{{loggedIn$ | async}}
-  </h5>
+  <div class="content">
+    <div class="main">
+      <img src="assets/imgs/coe.png" alt="Logo" class="logo" />
+      <h2>cavoe's osu! event</h2>
+    </div>
 
-  <ion-card>
-    <ion-card-content>
-      <ion-item>
-        <ion-label stacked>Email</ion-label>
-        <ion-input type="email" [(ngModel)]="email"></ion-input>
-      </ion-item>
 
-      <ion-item>
-        <ion-label stacked>Password</ion-label>
-        <ion-input type="password" [(ngModel)]="password"></ion-input>
-      </ion-item>
+    <ion-card class="inputs">
+      <ion-card-content>
+        <ion-item>
+          <ion-label color="primary" stacked>Email</ion-label>
+          <ion-input type="email" placeholder="user@email.com" [(ngModel)]="email"></ion-input>
+        </ion-item>
 
-      <button ion-button secondary (click)="login()" round full style="margin-top: 20px;">Log in</button>
-    </ion-card-content>
-  </ion-card>
+        <ion-item>
+          <ion-label color="primary" stacked>Password</ion-label>
+          <ion-input type="password" placeholder="password" [(ngModel)]="password"></ion-input>
+        </ion-item>
+
+        <button ion-button secondary (click)="login()" round full style="margin-top: 20px;">Log in</button>
+        <p style="color: red;">{{errorMsg}}</p>
+      </ion-card-content>
+    </ion-card>
+  </div>
 
 </ion-content>

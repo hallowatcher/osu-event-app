@@ -41,13 +41,6 @@ const FIREBASE = {
   ],
   bootstrap: [IonicApp],
   entryComponents: [MyApp],
-  providers: [
-    StatusBar,
-    SplashScreen,
-    BarcodeScanner,
-    Toast,
-    AuthService,
-    { provide: ErrorHandler, useClass: IonicErrorHandler }
-  ]
+  providers: [StatusBar, SplashScreen, BarcodeScanner, Toast, AuthService]
 })
 export class AppModule {}

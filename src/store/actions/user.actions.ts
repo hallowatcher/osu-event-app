@@ -7,6 +7,16 @@ export class Login {
   constructor(public email: string, public password: string) {}
 }
 
+export class LoginSuccess {
+  static readonly type = '[User] Login success';
+  constructor(public credentials: { email; uid }) {}
+}
+
+export class LoginError {
+  static readonly type = '[User] Login error';
+  constructor(public error: any) {}
+}
+
 export class Logout {
   static readonly type = '[User] Logout';
 }

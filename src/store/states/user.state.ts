@@ -1,8 +1,22 @@
 import { State, Action, StateContext, Selector } from '@ngxs/store';
 import { AuthService } from '../../services/auth.service';
-import { Login, Logout, CheckLoggedIn } from '../actions/user.actions';
-import { map, tap, switchMap, takeWhile, take } from 'rxjs/operators';
+import {
+  Login,
+  Logout,
+  CheckLoggedIn,
+  LoginError,
+  LoginSuccess
+} from '../actions/user.actions';
+import {
+  map,
+  tap,
+  switchMap,
+  takeWhile,
+  take,
+  catchError
+} from 'rxjs/operators';
 import { Observable } from 'rxjs/Observable';
+import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 
 export interface UserStateModel {
   loggedIn: boolean;
@@ -56,15 +70,19 @@ export class UserState {
   @Action(Login)
   login(ctx: StateContext<UserStateModel>, action: Login) {
     return this.authService.login(action.email, action.password).pipe(
-      tap(result => {
-        const state = ctx.getState();
-        ctx.setState({
-          ...state,
-          loggedIn: true,
-          email: result.email
-        });
-      })
+      switchMap(result => ctx.dispatch(new LoginSuccess(result))),
+      catchError(err => Observable.of(ctx.dispatch(new LoginError(err))))
     );
+  }
+
+  @Action(LoginSuccess)
+  loginSuccess(ctx: StateContext<UserStateModel>, action: LoginSuccess) {
+    const state = ctx.getState();
+    ctx.setState({
+      ...state,
+      loggedIn: true,
+      email: action.credentials.email
+    });
   }
 
   @Action(Logout)

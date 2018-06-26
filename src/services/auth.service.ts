@@ -25,7 +25,7 @@ export class AuthService {
     );
   }
 
-  login(loginEmail: string, password: string): Observable<any> {
+  login(loginEmail: string, password: string): Observable<{ email; uid }> {
     return from(
       this.auth.auth.signInWithEmailAndPassword(loginEmail, password)
     ).pipe(
