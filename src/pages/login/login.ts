@@ -6,9 +6,9 @@ import {
   Login,
   CheckLoggedIn,
   LoginError,
-  LoginSuccess
-} from '../../store/actions/user.actions';
-import { Home } from '../../store/actions/nav.actions';
+  LoginSuccess,
+  Home
+} from '../../store/actions';
 import { UserState } from '../../store/states/user.state';
 import { withLatestFrom, catchError } from 'rxjs/operators';
 

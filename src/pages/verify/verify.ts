@@ -4,11 +4,14 @@ import { IonicPage } from 'ionic-angular';
 import { withLatestFrom } from 'rxjs/operators';
 import { Payment } from 'models/payment';
 import { Store, Select } from '@ngxs/store';
-import { ChangeValidity, VerifyId } from '../../store/actions/ticket.actions';
-import { CheckLoggedIn } from '../../store/actions/user.actions';
+import {
+  ChangeValidity,
+  VerifyId,
+  CheckLoggedIn,
+  Push
+} from '../../store/actions';
 import { UserState } from '../../store/states/user.state';
 import { TicketState } from '../../store/states/ticket.state';
-import { Push } from '../../store/actions/nav.actions';
 
 @IonicPage()
 @Component({

@@ -2,8 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 import { Store } from '@ngxs/store';
-import { VerifyJwt } from '../../store/actions/ticket.actions';
-import { Pop } from '../../store/actions/nav.actions';
+import { VerifyJwt, Pop } from '../../store/actions';
 
 @IonicPage()
 @Component({
