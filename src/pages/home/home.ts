@@ -3,7 +3,7 @@ import { IonicPage } from 'ionic-angular';
 import { Store, Select } from '@ngxs/store';
 import { Observable } from 'rxjs/Observable';
 import { UserState } from '../../store/states/user.state';
-import { CheckLoggedIn } from '../../store/actions/user.actions';
+import { CheckLoggedIn } from '../../store/actions';
 import { withLatestFrom } from 'rxjs/operators';
 
 @IonicPage()
@@ -13,6 +13,7 @@ import { withLatestFrom } from 'rxjs/operators';
 })
 export class HomePage {
   @Select(UserState.loggedIn) loggedIn$: Observable<boolean>;
+  @Select(UserState.email) email$: Observable<string>;
 
   constructor(private store: Store) {}
 

@@ -8,7 +8,24 @@
 </ion-header>
 
 <ion-content padding>
-  <h3>osu! event</h3>
+  <h3>COE Verification App</h3>
 
-  <p>Welcome to the osu! event verification app!</p>
+  <p>
+    <b>Welcome, {{email$ | async}}! Please read the following information before continuing.</b>
+  </p>
+  <p>You can use the menu to find all the functionality you need.</p>
+  <p>If you don't find what you need, please log in to the admin panel at
+    <a href="https://cavoeboy.com/admin">https://cavoeboy.com/admin</a>
+  </p>
+  <p>For anything else, contact hallowatcher or cavoeboy directly.</p>
+  <p>Keep in mind that you have access to attendees' personal information, and therefore you comply to our
+    <a href="https://cavoeboy.com/tos">TOS</a> and
+    <a href="https://cavoeboy.com/privacy">Privacy Policy</a>.</p>
+  <p>The usage of the application and the verifying of tickets are documented in our database. Any leaks of our data or the
+    act of letting attendees in "under the radar" will be punished accordingly.</p>
+  <p>This app is only meant for the ticket verifiers. Sharing this app with others is strictly forbidden.</p>
+  <p>Happy verifying and thanks for your help!</p>
+  <p>
+    <i>- hallowatcher</i>
+  </p>
 </ion-content>

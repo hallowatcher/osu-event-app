@@ -35,6 +35,11 @@ export class UserState {
     return state.loggedIn;
   }
 
+  @Selector()
+  static email(state: UserStateModel) {
+    return state.email;
+  }
+
   constructor(private authService: AuthService) {}
 
   @Action(CheckLoggedIn)
