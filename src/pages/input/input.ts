@@ -14,10 +14,10 @@ export class InputPage {
 
   constructor(private store: Store) {}
 
-  ionViewDidLoad() {
+  ionViewDidEnter() {
     setTimeout(() => {
       this.input.setFocus();
-    }, 150);
+    }, 100);
   }
 
   submit() {
