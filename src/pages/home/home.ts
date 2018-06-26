@@ -1,6 +1,10 @@
 import { Component } from '@angular/core';
 import { IonicPage } from 'ionic-angular';
-import { AuthService } from '../../services/auth.service';
+import { Store, Select } from '@ngxs/store';
+import { Observable } from 'rxjs/Observable';
+import { UserState } from '../../store/states/user.state';
+import { CheckLoggedIn } from '../../store/actions/user.actions';
+import { withLatestFrom } from 'rxjs/operators';
 
 @IonicPage()
 @Component({
@@ -8,17 +12,22 @@ import { AuthService } from '../../services/auth.service';
   templateUrl: 'home.html'
 })
 export class HomePage {
-  constructor(private auth: AuthService) {}
+  @Select(UserState.loggedIn) loggedIn$: Observable<boolean>;
+
+  constructor(private store: Store) {}
 
   ionViewCanEnter() {
     return new Promise((resolve, reject) => {
-      this.auth.loggedIn().subscribe(loggedIn => {
-        if (!loggedIn) {
-          return reject();
-        }
+      this.store
+        .dispatch(new CheckLoggedIn())
+        .pipe(withLatestFrom(this.loggedIn$))
+        .subscribe(([state, loggedIn]) => {
+          if (!loggedIn) {
+            return reject();
+          }
 
-        resolve();
-      });
+          resolve();
+        });
     });
   }
 }

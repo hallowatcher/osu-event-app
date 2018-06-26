@@ -1,27 +1,16 @@
 import { Component } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { AuthService } from '../../services/auth.service';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
-import { Toast } from '@ionic-native/toast';
+import { Store } from '@ngxs/store';
+import { VerifyJwt } from '../../store/actions/ticket.actions';
+import { Pop } from '../../store/actions/nav.actions';
 
 @IonicPage()
 @Component({
   templateUrl: './scan.html'
 })
 export class ScanPage {
-  constructor(
-    private barcodeScanner: BarcodeScanner,
-    private toast: Toast,
-    private nav: NavController,
-    private navParams: NavParams
-  ) {}
-
-  callback = barcodeData => {};
-
-  ionViewWillEnter() {
-    this.callback = this.navParams.get('callback');
-  }
+  constructor(private barcodeScanner: BarcodeScanner, private store: Store) {}
 
   ionViewDidLoad() {
     this.barcodeScanner
@@ -31,12 +20,11 @@ export class ScanPage {
           return;
         }
 
-        this.callback(barcodeData);
-        this.nav.pop();
+        this.store.dispatch([new VerifyJwt(barcodeData.text), new Pop()]);
       })
       .catch(err => {
         console.error(err);
-        this.nav.pop();
+        this.store.dispatch(new Pop());
       });
   }
 }

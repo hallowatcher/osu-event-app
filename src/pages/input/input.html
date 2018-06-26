@@ -1,0 +1,16 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Verify ID</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-item>
+    <ion-label color="primary" stacked>Ticket ID</ion-label>
+    <ion-input #input type="text" placeholder="PAY-XXX" [(ngModel)]="id"></ion-input>
+  </ion-item>
+  <button ion-button secondary (click)="submit()" round full style="margin-top: 20px;">Submit</button>
+</ion-content>

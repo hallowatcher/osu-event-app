@@ -12,7 +12,7 @@ export class AuthService {
     return this.auth.authState.pipe(map(user => !!user));
   }
 
-  getUser(): Observable<any> {
+  getUser(): Observable<{ email: string; uid: string }> {
     return this.auth.authState.pipe(
       map(result => {
         if (!result) {

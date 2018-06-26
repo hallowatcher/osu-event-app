@@ -9,68 +9,80 @@
 
 <ion-content padding>
   <button ion-button secondary (click)="scan()" round full style="margin-top: 20px;">Scan ticket</button>
-  <ion-card *ngIf="payment">
-    <ion-card-content>
-      <ion-item>
-        <ion-label stacked>Payment ID</ion-label>
-        <ion-input type="text" value="{{payment?.id}}" disabled></ion-input>
-      </ion-item>
+  <button ion-button secondary (click)="input()" round full style="margin-top: 20px;">Enter ticket ID</button>
+  <ng-container *ngIf="payment$ | async as payment">
+    <ion-card>
+      <ion-card-content>
+        <h3 *ngIf="payment?.valid" style="color: green;">This ticket hasn't been checked yet</h3>
+        <h3 *ngIf="!payment?.valid" style="color: red;">This ticket has been checked already</h3>
+        <i>Last checked {{validChanged$ | async}}</i>
+        <button *ngIf="payment?.valid" ion-button class="invalidate" (click)="changeValidity(payment?.id, false)" round full style="margin-top: 20px;">Check ticket</button>
+        <button *ngIf="!payment?.valid" ion-button class="validate" (click)="changeValidity(payment?.id, true)" round full style="margin-top: 20px;">Uncheck ticket</button>
+      </ion-card-content>
+    </ion-card>
+    <ion-card>
+      <ion-card-content>
+        <ion-item>
+          <ion-label stacked>Payment ID</ion-label>
+          <ion-input type="text" value="{{payment?.id}}" disabled></ion-input>
+        </ion-item>
 
-      <ion-item>
-        <ion-label stacked>Transaction ID</ion-label>
-        <ion-input type="text" value="{{payment?.transactionId || 'N/A'}}" disabled></ion-input>
-      </ion-item>
+        <ion-item>
+          <ion-label stacked>Transaction ID</ion-label>
+          <ion-input type="text" value="{{payment?.transactionId || 'N/A'}}" disabled></ion-input>
+        </ion-item>
 
-      <ion-item>
-        <ion-label stacked>First name</ion-label>
-        <ion-input type="text" value="{{payment?.userInfo.firstName}}" disabled></ion-input>
-      </ion-item>
+        <ion-item>
+          <ion-label stacked>First name</ion-label>
+          <ion-input type="text" value="{{payment?.userInfo.firstName}}" disabled></ion-input>
+        </ion-item>
 
-      <ion-item>
-        <ion-label stacked>Last name</ion-label>
-        <ion-input type="text" value="{{payment?.userInfo.lastName}}" disabled></ion-input>
-      </ion-item>
+        <ion-item>
+          <ion-label stacked>Last name</ion-label>
+          <ion-input type="text" value="{{payment?.userInfo.lastName}}" disabled></ion-input>
+        </ion-item>
 
-      <ion-item>
-        <ion-label stacked>Nickname</ion-label>
-        <ion-input type="text" value="{{payment?.userInfo.nickname}}" disabled></ion-input>
-      </ion-item>
+        <ion-item>
+          <ion-label stacked>Nickname</ion-label>
+          <ion-input type="text" value="{{payment?.userInfo.nickname}}" disabled></ion-input>
+        </ion-item>
 
-      <ion-item>
-        <ion-label stacked>Email</ion-label>
-        <ion-input type="text" value="{{payment?.userInfo.email}}" disabled></ion-input>
-      </ion-item>
+        <ion-item>
+          <ion-label stacked>Email</ion-label>
+          <ion-input type="text" value="{{payment?.userInfo.email}}" disabled></ion-input>
+        </ion-item>
 
-      <ion-item>
-        <ion-label stacked>Ticket type</ion-label>
-        <ion-input type="text" value="{{payment?.type}}" disabled></ion-input>
-      </ion-item>
+        <ion-item>
+          <ion-label stacked>Ticket type</ion-label>
+          <ion-input type="text" value="{{payment?.type}}" disabled></ion-input>
+        </ion-item>
 
-      <ion-item>
-        <ion-label stacked>Ticket duration</ion-label>
-        <ion-input type="text" value="{{payment?.duration}}" disabled></ion-input>
-      </ion-item>
+        <ion-item>
+          <ion-label stacked>Ticket duration</ion-label>
+          <ion-input type="text" value="{{payment?.duration}}" disabled></ion-input>
+        </ion-item>
 
-      <ion-item *ngIf="payment?.extras">
-        <ion-label stacked>Ticket extras</ion-label>
-        <ion-input type="text" value="{{payment?.extras.join(', ')}}" disabled></ion-input>
-      </ion-item>
+        <ion-item *ngIf="payment?.extras">
+          <ion-label stacked>Ticket extras</ion-label>
+          <ion-input type="text" value="{{payment?.extras.join(', ')}}" disabled></ion-input>
+        </ion-item>
 
-      <ion-item>
-        <ion-label stacked>Payment status</ion-label>
-        <ion-input type="text" value="{{payment?.status}}" disabled></ion-input>
-      </ion-item>
+        <ion-item>
+          <ion-label stacked>Payment status</ion-label>
+          <ion-input type="text" value="{{payment?.status}}" disabled></ion-input>
+        </ion-item>
 
-      <ion-item *ngIf="payment?.paymentOn">
-        <ion-label stacked>Payment on</ion-label>
-        <ion-input type="text" value="{{payment?.paymentOn}}" disabled></ion-input>
-      </ion-item>
+        <ion-item *ngIf="payment?.paymentOn">
+          <ion-label stacked>Payment on</ion-label>
+          <ion-input type="text" value="{{payment?.paymentOn}}" disabled></ion-input>
+        </ion-item>
 
-      <ion-item>
-        <ion-label stacked>Payment total</ion-label>
-        <ion-input type="text" value="{{payment?.total}} {{payment?.currency}}" disabled></ion-input>
-      </ion-item>
-    </ion-card-content>
-  </ion-card>
+        <ion-item>
+          <ion-label stacked>Payment total</ion-label>
+          <ion-input type="text" value="{{payment?.total}} {{payment?.currency}}" disabled></ion-input>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
+  </ng-container>
 
 </ion-content>

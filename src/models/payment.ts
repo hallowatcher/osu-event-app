@@ -18,4 +18,6 @@ export interface Payment {
   currency?: string;
   items?: any[];
   paymentOn?: string;
+  valid: boolean;
+  validChanged: string;
 }

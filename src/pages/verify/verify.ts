@@ -1,49 +1,52 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { AuthService } from '../../services/auth.service';
-import { IonicPage, NavController } from 'ionic-angular';
-import { BarcodeScanner } from '@ionic-native/barcode-scanner';
-import { Toast } from '@ionic-native/toast';
-import * as jwt from 'jsonwebtoken';
-import { ENV } from '@app/env';
-import { AngularFireDatabase } from 'angularfire2/database';
-import { take } from 'rxjs/operators';
+import { IonicPage } from 'ionic-angular';
+import { withLatestFrom } from 'rxjs/operators';
 import { Payment } from 'models/payment';
+import { Store, Select } from '@ngxs/store';
+import { ChangeValidity, VerifyId } from '../../store/actions/ticket.actions';
+import { CheckLoggedIn } from '../../store/actions/user.actions';
+import { UserState } from '../../store/states/user.state';
+import { TicketState } from '../../store/states/ticket.state';
+import { Push } from '../../store/actions/nav.actions';
 
 @IonicPage()
 @Component({
   templateUrl: './verify.html'
 })
 export class VerifyPage {
-  constructor(
-    private barcodeScanner: BarcodeScanner,
-    private toast: Toast,
-    private nav: NavController,
-    private db: AngularFireDatabase
-  ) {}
+  constructor(private store: Store) {}
 
-  payment: Payment;
+  @Select(UserState.loggedIn) loggedIn$: Observable<boolean>;
+  @Select(TicketState.activeTicket) payment$: Observable<Payment>;
+  @Select(TicketState.validChangedFromNow) validChanged$: Observable<string>;
 
-  verify(barcodeData) {
-    const token = barcodeData.text;
-    try {
-      const decoded = <any>jwt.verify(token, ENV.ticketSecret);
-      const orderId = decoded.orderId;
+  ionViewCanEnter() {
+    return new Promise((resolve, reject) => {
+      this.store
+        .dispatch(new CheckLoggedIn())
+        .pipe(withLatestFrom(this.loggedIn$))
+        .subscribe(([state, loggedIn]) => {
+          if (!loggedIn) {
+            return reject();
+          }
 
-      // Grab the payment from the database
-      this.db
-        .object(`payments/${orderId}`)
-        .valueChanges()
-        .pipe(take(1))
-        .subscribe((payment: Payment) => {
-          this.payment = payment;
+          resolve();
         });
-    } catch (e) {
-      console.error(e);
-    }
+    });
   }
 
   scan() {
-    this.nav.push('ScanPage', { callback: this.verify.bind(this) });
+    this.store.dispatch(new Push('ScanPage'));
+  }
+
+  input() {
+    this.store.dispatch(new Push('InputPage'));
+  }
+
+  changeValidity(id: string, valid: boolean) {
+    this.store.dispatch(new ChangeValidity(id, valid)).subscribe(() => {
+      this.store.dispatch(new VerifyId(id));
+    });
   }
 }
