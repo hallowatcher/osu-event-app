@@ -9,7 +9,7 @@
 
 <ion-content padding>
   <button ion-button secondary (click)="scan()" round full style="margin-top: 20px;">Scan ticket</button>
-  <button ion-button secondary (click)="input()" round full style="margin-top: 20px;">Enter ticket ID</button>
+  <button ion-button secondary (click)="input()" round full style="margin-top: 20px;">Enter payment ID</button>
   <ng-container *ngIf="payment$ | async as payment">
     <ion-card>
       <ion-card-content>

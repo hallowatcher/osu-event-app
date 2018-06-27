@@ -1,10 +1,16 @@
 import { State, Action, StateContext, Selector } from '@ngxs/store';
 import { Payment } from '../../models/payment';
-import { ChangeValidity, VerifyJwt, VerifyId } from '../actions/ticket.actions';
+import {
+  ChangeValidity,
+  VerifyJwt,
+  VerifyId,
+  VerifyJwtFailed,
+  VerifyIdFailed
+} from '../actions/ticket.actions';
 import * as jwt from 'jsonwebtoken';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { ENV } from '@app/env';
-import { take, tap } from 'rxjs/operators';
+import { take, tap, catchError } from 'rxjs/operators';
 import moment from 'moment';
 
 export interface TicketStateModel {
@@ -44,6 +50,12 @@ export class TicketState {
         .pipe(
           take(1),
           tap((activeTicket: Payment) => {
+            if (!activeTicket) {
+              return ctx.dispatch(
+                new VerifyIdFailed({ message: 'Invalid payment ID' })
+              );
+            }
+
             if (activeTicket.valid === undefined) {
               activeTicket.valid = true;
             }
@@ -53,10 +65,11 @@ export class TicketState {
               ...state,
               activeTicket
             });
-          })
+          }),
+          catchError(e => ctx.dispatch(new VerifyIdFailed(e)))
         );
     } catch (e) {
-      console.error(e);
+      ctx.dispatch(new VerifyJwtFailed(e));
     }
   }
 
@@ -68,6 +81,12 @@ export class TicketState {
       .pipe(
         take(1),
         tap((activeTicket: Payment) => {
+          if (!activeTicket) {
+            return ctx.dispatch(
+              new VerifyIdFailed({ message: 'Invalid payment ID' })
+            );
+          }
+
           if (!activeTicket) {
             throw new Error('Invalid ticket');
           }
@@ -81,7 +100,8 @@ export class TicketState {
             ...state,
             activeTicket
           });
-        })
+        }),
+        catchError(e => ctx.dispatch(new VerifyIdFailed(e)))
       );
   }
 

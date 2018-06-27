@@ -5,9 +5,19 @@ export class VerifyJwt {
   constructor(public jwt: string) {}
 }
 
+export class VerifyJwtFailed {
+  static readonly type = '[Tickets] Verify ticket from JWT failed';
+  constructor(public error: any) {}
+}
+
 export class VerifyId {
-  static readonly type = '[Tickets] Verify ticket from ID';
+  static readonly type = '[Tickets] Verify ticket ID';
   constructor(public id: string) {}
+}
+
+export class VerifyIdFailed {
+  static readonly type = '[Tickets] Verify ticket ID failed';
+  constructor(public error: any) {}
 }
 
 export class ChangeValidity {
