@@ -51,9 +51,10 @@ export class TicketState {
           take(1),
           tap((activeTicket: Payment) => {
             if (!activeTicket) {
-              return ctx.dispatch(
+              ctx.dispatch(
                 new VerifyIdFailed({ message: 'Invalid payment ID' })
               );
+              return;
             }
 
             if (activeTicket.valid === undefined) {
@@ -82,9 +83,8 @@ export class TicketState {
         take(1),
         tap((activeTicket: Payment) => {
           if (!activeTicket) {
-            return ctx.dispatch(
-              new VerifyIdFailed({ message: 'Invalid payment ID' })
-            );
+            ctx.dispatch(new VerifyIdFailed({ message: 'Invalid payment ID' }));
+            return;
           }
 
           if (!activeTicket) {

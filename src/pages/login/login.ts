@@ -8,7 +8,8 @@ import {
   LoginError,
   LoginSuccess,
   Home,
-  UserState
+  UserState,
+  BasicAlert
 } from '@app/store';
 import { withLatestFrom, catchError } from 'rxjs/operators';
 
@@ -20,7 +21,6 @@ export class LoginPage {
   @Select(UserState.loggedIn) loggedIn$: Observable<boolean>;
   email: string = '';
   password: string = '';
-  errorMsg = '';
 
   constructor(public store: Store, private actions$: Actions) {
     this.store
@@ -32,8 +32,16 @@ export class LoginPage {
         }
       });
 
-    this.actions$.pipe(ofAction(LoginError)).subscribe((error: any) => {
-      this.errorMsg = error.error.message;
+    this.actions$.pipe(ofAction(LoginError)).subscribe((e: any) => {
+      this.store.dispatch(
+        new BasicAlert({
+          title: 'Error',
+          subTitle:
+            e.error.message +
+            ' If the problem persists, please contact hallowatcher.',
+          buttons: ['OK']
+        })
+      );
     });
 
     this.actions$

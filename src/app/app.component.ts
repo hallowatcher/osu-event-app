@@ -11,7 +11,7 @@ import { Logout, Home } from '@app/store';
 export class MyApp {
   rootPage: any = 'LoginPage';
 
-  pages: Array<{ title: string; component: any }>;
+  pages: Array<{ title: string; component: any; icon: string }>;
 
   constructor(
     public platform: Platform,
@@ -23,9 +23,9 @@ export class MyApp {
 
     // used for an example of ngFor and navigation
     this.pages = [
-      { title: 'Home', component: 'HomePage' },
-      { title: 'Verify', component: 'VerifyPage' },
-      { title: 'Logout', component: '' }
+      { title: 'Home', component: 'HomePage', icon: 'home' },
+      { title: 'Verify', component: 'VerifyPage', icon: 'checkmark-circle' },
+      { title: 'Logout', component: '', icon: 'arrow-round-back' }
     ];
   }
 
