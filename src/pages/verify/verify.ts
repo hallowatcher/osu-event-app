@@ -15,14 +15,20 @@ import {
   UserState,
   TicketState
 } from '@app/store';
+import { Subscription } from 'rxjs/Subscription';
 
 @IonicPage()
 @Component({
   templateUrl: './verify.html'
 })
 export class VerifyPage {
+  private subscriptions = new Subscription();
+  @Select(UserState.loggedIn) loggedIn$: Observable<boolean>;
+  @Select(TicketState.activeTicket) payment$: Observable<Payment>;
+  @Select(TicketState.validChangedFromNow) validChanged$: Observable<string>;
+
   constructor(private store: Store, private actions: Actions) {
-    this.actions
+    const subscription = this.actions
       .pipe(ofAction(VerifyJwtFailed, VerifyIdFailed))
       .subscribe((e: any) => {
         this.store.dispatch(
@@ -35,11 +41,9 @@ export class VerifyPage {
           })
         );
       });
-  }
 
-  @Select(UserState.loggedIn) loggedIn$: Observable<boolean>;
-  @Select(TicketState.activeTicket) payment$: Observable<Payment>;
-  @Select(TicketState.validChangedFromNow) validChanged$: Observable<string>;
+    this.subscriptions.add(subscription);
+  }
 
   ionViewCanEnter() {
     return new Promise((resolve, reject) => {
@@ -56,6 +60,10 @@ export class VerifyPage {
     });
   }
 
+  ionViewWillUnload() {
+    this.subscriptions.unsubscribe();
+  }
+
   scan() {
     this.store.dispatch(new Push('ScanPage'));
   }
@@ -66,7 +74,7 @@ export class VerifyPage {
 
   changeValidity(id: string, valid: boolean) {
     this.store.dispatch(new ChangeValidity(id, valid)).subscribe(() => {
-      this.store.dispatch(new VerifyId(id));
+      setTimeout(() => this.store.dispatch(new VerifyId(id)), 500);
     });
   }
 }

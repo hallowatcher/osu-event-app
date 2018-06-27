@@ -12,18 +12,20 @@ import {
   BasicAlert
 } from '@app/store';
 import { withLatestFrom, catchError } from 'rxjs/operators';
+import { Subscription } from 'rxjs/Subscription';
 
 @IonicPage()
 @Component({
   templateUrl: './login.html'
 })
 export class LoginPage {
-  @Select(UserState.loggedIn) loggedIn$: Observable<boolean>;
   email: string = '';
   password: string = '';
+  private subscriptions = new Subscription();
+  @Select(UserState.loggedIn) loggedIn$: Observable<boolean>;
 
   constructor(public store: Store, private actions$: Actions) {
-    this.store
+    const subscriptionOne = this.store
       .dispatch(new CheckLoggedIn())
       .pipe(withLatestFrom(this.loggedIn$))
       .subscribe(([state, loggedIn]) => {
@@ -32,21 +34,31 @@ export class LoginPage {
         }
       });
 
-    this.actions$.pipe(ofAction(LoginError)).subscribe((e: any) => {
-      this.store.dispatch(
-        new BasicAlert({
-          title: 'Error',
-          subTitle:
-            e.error.message +
-            ' If the problem persists, please contact hallowatcher.',
-          buttons: ['OK']
-        })
-      );
-    });
+    const subscriptionTwo = this.actions$
+      .pipe(ofAction(LoginError))
+      .subscribe((e: any) => {
+        this.store.dispatch(
+          new BasicAlert({
+            title: 'Error',
+            subTitle:
+              e.error.message +
+              ' If the problem persists, please contact hallowatcher.',
+            buttons: ['OK']
+          })
+        );
+      });
 
-    this.actions$
+    const subscriptionThree = this.actions$
       .pipe(ofAction(LoginSuccess))
       .subscribe(() => this.store.dispatch(new Home('HomePage')));
+
+    this.subscriptions.add(subscriptionOne);
+    this.subscriptions.add(subscriptionTwo);
+    this.subscriptions.add(subscriptionThree);
+  }
+
+  ionViewWillUnload() {
+    this.subscriptions.unsubscribe();
   }
 
   login() {
