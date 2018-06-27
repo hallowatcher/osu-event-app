@@ -10,12 +10,11 @@ import {
   CheckLoggedIn,
   Push,
   VerifyJwtFailed,
-  VerifyJwt,
   BasicAlert,
-  VerifyIdFailed
-} from '../../store/actions';
-import { UserState } from '../../store/states/user.state';
-import { TicketState } from '../../store/states/ticket.state';
+  VerifyIdFailed,
+  UserState,
+  TicketState
+} from '@app/store';
 
 @IonicPage()
 @Component({
@@ -31,7 +30,7 @@ export class VerifyPage {
             title: 'Error',
             subTitle:
               e.error.message +
-              '! If the problem persists, please enter the payment ID manually.',
+              '! If the problem persists, please contact hallowatcher.',
             buttons: ['OK']
           })
         );

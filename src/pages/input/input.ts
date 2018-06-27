@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, TextInput } from 'ionic-angular';
 import { Store } from '@ngxs/store';
-import { VerifyId, Pop } from '../../store/actions';
+import { VerifyId, Pop } from '@app/store';
 
 @IonicPage()
 @Component({

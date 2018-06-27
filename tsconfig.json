@@ -11,7 +11,9 @@
     "target": "es5",
     "baseUrl": "./src",
     "paths": {
-      "@app/env": ["environments/environment"]
+      "@app/env": ["environments/environment"],
+      "@app/store/*": ["store/*"],
+      "@app/store": ["store/index"]
     }
   },
   "include": ["src/**/*.ts"],

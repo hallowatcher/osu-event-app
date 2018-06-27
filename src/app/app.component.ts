@@ -3,7 +3,7 @@ import { Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Store } from '@ngxs/store';
-import { Logout, Home } from '../store/actions';
+import { Logout, Home } from '@app/store';
 
 @Component({
   templateUrl: 'app.html'

@@ -7,9 +7,9 @@ import {
   CheckLoggedIn,
   LoginError,
   LoginSuccess,
-  Home
-} from '../../store/actions';
-import { UserState } from '../../store/states/user.state';
+  Home,
+  UserState
+} from '@app/store';
 import { withLatestFrom, catchError } from 'rxjs/operators';
 
 @IonicPage()

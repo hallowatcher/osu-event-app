@@ -2,8 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage } from 'ionic-angular';
 import { Store, Select } from '@ngxs/store';
 import { Observable } from 'rxjs/Observable';
-import { UserState } from '../../store/states/user.state';
-import { CheckLoggedIn } from '../../store/actions';
+import { UserState, CheckLoggedIn } from '@app/store';
 import { withLatestFrom } from 'rxjs/operators';
 
 @IonicPage()
