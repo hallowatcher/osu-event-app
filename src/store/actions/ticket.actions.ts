@@ -15,6 +15,11 @@ export class VerifyId {
   constructor(public id: string) {}
 }
 
+export class VerifySuccess {
+  static readonly type = '[Tickets] Verify ticket success';
+  constructor(public payment: Payment) {}
+}
+
 export class VerifyIdFailed {
   static readonly type = '[Tickets] Verify ticket ID failed';
   constructor(public error: any) {}

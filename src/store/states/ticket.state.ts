@@ -5,7 +5,8 @@ import {
   VerifyJwt,
   VerifyId,
   VerifyJwtFailed,
-  VerifyIdFailed
+  VerifyIdFailed,
+  VerifySuccess
 } from '../actions/ticket.actions';
 import * as jwt from 'jsonwebtoken';
 import { AngularFireDatabase } from 'angularfire2/database';
@@ -57,15 +58,7 @@ export class TicketState {
               return;
             }
 
-            if (activeTicket.valid === undefined) {
-              activeTicket.valid = true;
-            }
-
-            const state = ctx.getState();
-            ctx.setState({
-              ...state,
-              activeTicket
-            });
+            ctx.dispatch(new VerifySuccess(activeTicket));
           }),
           catchError(e => ctx.dispatch(new VerifyIdFailed(e)))
         );
@@ -87,22 +80,25 @@ export class TicketState {
             return;
           }
 
-          if (!activeTicket) {
-            throw new Error('Invalid ticket');
-          }
-
-          if (activeTicket.valid === undefined) {
-            activeTicket.valid = true;
-          }
-
-          const state = ctx.getState();
-          ctx.setState({
-            ...state,
-            activeTicket
-          });
+          ctx.dispatch(new VerifySuccess(activeTicket));
         }),
         catchError(e => ctx.dispatch(new VerifyIdFailed(e)))
       );
+  }
+
+  @Action(VerifySuccess)
+  verifySuccess(ctx: StateContext<TicketStateModel>, action: VerifySuccess) {
+    const activeTicket: Payment = { ...action.payment };
+
+    if (activeTicket.valid === undefined) {
+      activeTicket.valid = true;
+    }
+
+    const state = ctx.getState();
+    ctx.setState({
+      ...state,
+      activeTicket
+    });
   }
 
   @Action(ChangeValidity)
