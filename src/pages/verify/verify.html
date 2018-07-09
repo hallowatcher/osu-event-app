@@ -14,6 +14,9 @@
     <ion-icon name="code-working" style="margin-right: 5px;"></ion-icon>Enter payment ID</button>
   <ng-container *ngIf="payment$ | async as payment">
     <ion-card>
+      <ion-card-header>
+        Ticket actions
+      </ion-card-header>
       <ion-card-content>
         <h3 *ngIf="payment?.valid" style="color: green;">This ticket hasn't been checked yet</h3>
         <h3 *ngIf="!payment?.valid" style="color: red;">This ticket has been checked already</h3>
@@ -23,65 +26,97 @@
       </ion-card-content>
     </ion-card>
     <ion-card>
+      <ion-card-header>
+        Ticket details
+      </ion-card-header>
       <ion-card-content>
         <ion-item>
-          <ion-label stacked>Payment ID</ion-label>
-          <ion-input type="text" value="{{payment?.id}}" disabled></ion-input>
+          <h2>Payment ID</h2>
+          <p>{{payment?.id}}</p>
         </ion-item>
 
         <ion-item>
-          <ion-label stacked>Transaction ID</ion-label>
-          <ion-input type="text" value="{{payment?.transactionId || 'N/A'}}" disabled></ion-input>
+          <h2>Transaction ID</h2>
+          <p>{{payment?.transactionId || 'N/A'}}</p>
         </ion-item>
 
         <ion-item>
-          <ion-label stacked>First name</ion-label>
-          <ion-input type="text" value="{{payment?.userInfo.firstName}}" disabled></ion-input>
+          <h2>First name</h2>
+          <p>{{payment?.userInfo.firstName}}</p>
         </ion-item>
 
         <ion-item>
-          <ion-label stacked>Last name</ion-label>
-          <ion-input type="text" value="{{payment?.userInfo.lastName}}" disabled></ion-input>
+          <h2>Last name</h2>
+          <p>{{payment?.userInfo.lastName}}</p>
         </ion-item>
 
         <ion-item>
-          <ion-label stacked>Nickname</ion-label>
-          <ion-input type="text" value="{{payment?.userInfo.nickname}}" disabled></ion-input>
+          <h2>Nickname</h2>
+          <p>{{payment?.userInfo.nickname}}</p>
         </ion-item>
 
         <ion-item>
-          <ion-label stacked>Email</ion-label>
-          <ion-input type="text" value="{{payment?.userInfo.email}}" disabled></ion-input>
+          <h2>Email</h2>
+          <p>{{payment?.userInfo.email}}</p>
         </ion-item>
 
         <ion-item>
-          <ion-label stacked>Ticket type</ion-label>
-          <ion-input type="text" value="{{payment?.type}}" disabled></ion-input>
+          <h2>Ticket type</h2>
+          <p>{{payment?.type}}</p>
         </ion-item>
 
         <ion-item>
-          <ion-label stacked>Ticket duration</ion-label>
-          <ion-input type="text" value="{{payment?.duration}}" disabled></ion-input>
+          <h2>Ticket duration</h2>
+          <p>{{payment?.duration}}</p>
         </ion-item>
 
         <ion-item *ngIf="payment?.extras">
-          <ion-label stacked>Ticket extras</ion-label>
-          <ion-input type="text" value="{{payment?.extras.join(', ')}}" disabled></ion-input>
+          <h2>Ticket extras</h2>
+          <p>{{payment?.extras.join(', ')}}</p>
         </ion-item>
 
         <ion-item>
-          <ion-label stacked>Payment status</ion-label>
-          <ion-input type="text" value="{{payment?.status}}" disabled></ion-input>
+          <h2>Payment status</h2>
+          <p>{{payment?.status}}</p>
         </ion-item>
 
         <ion-item *ngIf="payment?.paymentOn">
-          <ion-label stacked>Payment on</ion-label>
-          <ion-input type="text" value="{{payment?.paymentOn}}" disabled></ion-input>
+          <h2>Payment on</h2>
+          <p>{{payment?.paymentOn}}</p>
         </ion-item>
 
         <ion-item>
-          <ion-label stacked>Payment total</ion-label>
-          <ion-input type="text" value="{{payment?.total}} {{payment?.currency}}" disabled></ion-input>
+          <h2>Payment total</h2>
+          <p>{{payment?.total}} {{payment?.currency}}</p>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
+  </ng-container>
+
+  <ng-container *ngIf="seat$ | async as seat">
+    <ion-card>
+      <ion-card-header>
+        Seat details
+      </ion-card-header>
+      <ion-card-content>
+        <ion-item>
+          <h2>Seat area</h2>
+          <p>{{seat?.type}}</p>
+        </ion-item>
+
+        <ion-item>
+          <h2>Seat ID</h2>
+          <p>{{seat?.seat}}</p>
+        </ion-item>
+
+        <ion-item>
+          <h2>Seat duration</h2>
+          <p>{{seat?.duration}}</p>
+        </ion-item>
+
+        <ion-item>
+          <h2>Seat username</h2>
+          <p>{{seat?.username}}</p>
         </ion-item>
       </ion-card-content>
     </ion-card>

@@ -1,26 +1,32 @@
 import { State, Action, StateContext, Selector } from '@ngxs/store';
 import { Payment } from '../../models/payment';
+import * as jwt from 'jsonwebtoken';
+import { AngularFireDatabase } from 'angularfire2/database';
+import { ENV } from '@app/env';
+import { take, tap, catchError } from 'rxjs/operators';
+import moment from 'moment';
+import { Seat } from '../../models/seat';
 import {
+  GetSeat,
+  GetSeatFailed,
+  GetSeatSuccess,
   ChangeValidity,
   VerifyJwt,
   VerifyId,
   VerifyJwtFailed,
   VerifyIdFailed,
   VerifySuccess
-} from '../actions/ticket.actions';
-import * as jwt from 'jsonwebtoken';
-import { AngularFireDatabase } from 'angularfire2/database';
-import { ENV } from '@app/env';
-import { take, tap, catchError } from 'rxjs/operators';
-import moment from 'moment';
+} from '@app/store/actions';
 
 export interface TicketStateModel {
   activeTicket: Payment;
+  activeSeat: Seat;
 }
 @State<TicketStateModel>({
   name: 'ticket',
   defaults: {
-    activeTicket: undefined
+    activeTicket: undefined,
+    activeSeat: undefined
   }
 })
 export class TicketState {
@@ -34,6 +40,11 @@ export class TicketState {
     return state.activeTicket.validChanged
       ? moment(state.activeTicket.validChanged).fromNow()
       : 'never';
+  }
+
+  @Selector()
+  static activeSeat(state: TicketStateModel): Seat {
+    return state.activeSeat;
   }
 
   constructor(private db: AngularFireDatabase) {}
@@ -88,6 +99,8 @@ export class TicketState {
 
   @Action(VerifySuccess)
   verifySuccess(ctx: StateContext<TicketStateModel>, action: VerifySuccess) {
+    ctx.dispatch(new GetSeat(action.payment.id));
+
     const activeTicket: Payment = { ...action.payment };
 
     if (activeTicket.valid === undefined) {
@@ -98,6 +111,47 @@ export class TicketState {
     ctx.setState({
       ...state,
       activeTicket
+    });
+  }
+
+  @Action(GetSeat)
+  getSeat(ctx: StateContext<TicketStateModel>, action: GetSeat) {
+    return this.db
+      .object(`seats/${action.id}`)
+      .valueChanges()
+      .pipe(
+        take(1),
+        tap((seat: Seat) => {
+          if (!seat) {
+            ctx.dispatch(
+              new GetSeatFailed({ message: 'No seat reservation!' })
+            );
+            return;
+          }
+
+          ctx.dispatch(new GetSeatSuccess(seat));
+        }),
+        catchError(e => ctx.dispatch(new GetSeatFailed(e)))
+      );
+  }
+
+  @Action(GetSeatSuccess)
+  getSeatSuccess(ctx: StateContext<TicketStateModel>, action: GetSeatSuccess) {
+    const activeSeat: Seat = { ...action.seat };
+
+    const state = ctx.getState();
+    ctx.setState({
+      ...state,
+      activeSeat
+    });
+  }
+
+  @Action(GetSeatFailed)
+  getSeatFailed(ctx: StateContext<TicketStateModel>, action: GetSeatFailed) {
+    const state = ctx.getState();
+    ctx.setState({
+      ...state,
+      activeSeat: undefined
     });
   }
 

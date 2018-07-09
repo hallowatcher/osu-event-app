@@ -25,6 +25,7 @@ export class VerifyPage {
   private subscriptions = new Subscription();
   @Select(UserState.loggedIn) loggedIn$: Observable<boolean>;
   @Select(TicketState.activeTicket) payment$: Observable<Payment>;
+  @Select(TicketState.activeSeat) seat$: Observable<Payment>;
   @Select(TicketState.validChangedFromNow) validChanged$: Observable<string>;
 
   constructor(private store: Store, private actions: Actions) {
