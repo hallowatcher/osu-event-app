@@ -15,10 +15,13 @@ import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 import { Toast } from '@ionic-native/toast';
 
 import { AuthService } from '../services/auth.service';
-import { TicketState } from '../store/states/ticket.state';
-import { UserState } from '../store/states/user.state';
-import { NavState } from '../store/states/nav.state';
-import { AlertState } from '../store/states/alert.state';
+import {
+  ToastState,
+  AlertState,
+  NavState,
+  UserState,
+  TicketState
+} from '@app/store';
 
 const FIREBASE = {
   apiKey: 'AIzaSyD_Owd16YQQfcYcPoMF2k3If8lJeNIepxw',
@@ -37,7 +40,13 @@ const FIREBASE = {
     AngularFireModule.initializeApp(FIREBASE),
     AngularFireAuthModule,
     AngularFireDatabaseModule,
-    NgxsModule.forRoot([NavState, TicketState, UserState, AlertState]),
+    NgxsModule.forRoot([
+      NavState,
+      TicketState,
+      UserState,
+      AlertState,
+      ToastState
+    ]),
     NgxsLoggerPluginModule.forRoot()
   ],
   bootstrap: [IonicApp],

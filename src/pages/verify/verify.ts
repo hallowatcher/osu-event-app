@@ -13,7 +13,9 @@ import {
   BasicAlert,
   VerifyIdFailed,
   UserState,
-  TicketState
+  TicketState,
+  GetSeatFailed,
+  Create
 } from '@app/store';
 import { Subscription } from 'rxjs/Subscription';
 
@@ -43,7 +45,21 @@ export class VerifyPage {
         );
       });
 
+    const subscriptionTwo = this.actions
+      .pipe(ofAction(GetSeatFailed))
+      .subscribe((e: any) => {
+        this.store.dispatch(
+          new Create({
+            message: 'No seat reservation found!',
+            duration: 5000,
+            showCloseButton: true,
+            closeButtonText: 'Ok'
+          })
+        );
+      });
+
     this.subscriptions.add(subscription);
+    this.subscriptions.add(subscriptionTwo);
   }
 
   ionViewCanEnter() {
