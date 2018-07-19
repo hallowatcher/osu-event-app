@@ -29,7 +29,7 @@ export class AuthService {
     return from(
       this.auth.auth.signInWithEmailAndPassword(loginEmail, password)
     ).pipe(
-      map(result => {
+      map((result: any) => {
         const { email, uid } = result;
         return { email, uid };
       })
